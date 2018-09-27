@@ -141,7 +141,12 @@ class Level {
     }
   }
 
-  noMoreActors() {}
+  noMoreActors(typeMovingObject) {
+    for (let item of this.actors) {
+      if (typeMovingObject === item.type) return false;
+    }
+    return true;
+  }
 
   playerTouched() {}
 }
