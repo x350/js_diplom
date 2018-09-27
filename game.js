@@ -81,17 +81,18 @@ class Level {
   constructor(grid=[], actorsArray=[]) {
     this.grid = grid;
     this.actors = actorsArray;
-    // for(let item of this.actors){
-    //   if (item.type === 'player') {
-    //     this.player = item;
-    //     return;
-    //   }
-    // }
+    for(let item of this.actors){
+      if (item.type === 'player') {
+        this.player = item;
+        return;
+      }
+    }
     this.height = this.grid.length;
     let maxRow = 0;
     for(let row of this.grid) {
-      if (row.length > maxRow) {
-        maxRow = row.length;
+      let tempValue = (row !== undefined) ? row.length : 0;
+      if (tempValue > maxRow) {
+        maxRow = tempValue;
       }
     }
     this.width = maxRow;
