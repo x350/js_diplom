@@ -156,3 +156,57 @@ class Level {
     if (this.noMoreActors(TouchedObject.type)) this.status = 'won';
   }
 }
+
+
+// Реализация LevelParser.
+
+class LevelParser {
+  constructor(ObjectsDict){
+
+  }
+
+  actorFromSymbol() {}
+
+  obstacleFromSymbol() {}
+
+  createGrid() {}
+
+  createActors() {}
+
+  parse() {}
+}
+
+
+class Fireball extends Actor {
+  constructor() {}
+}
+
+class HorizontalFireball {
+  constructor() {}
+}
+
+class VerticalFireball {
+  constructor() {}
+}
+
+class FireRain {
+  constructor() {}
+}
+
+class Coin extends Actor {
+  constructor() {
+    this.type = 'coin';
+  }
+
+  updateSpring() {}
+
+  getSpringVector() {}
+
+  getNextPosition() {}
+
+  act(time) {}
+}
+
+class Player extends Actor{
+  constructor() {}
+}
