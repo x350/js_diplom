@@ -129,8 +129,15 @@ class Level {
     }
   }
 
-  removeActor() {
-    
+  removeActor(objectActor) {
+    if (objectActor instanceof Actor) {
+      let index = this.actors.indexOf(objectActor);
+      if (index !== -1) {
+       this.actors.splice(index, 1);
+       }      
+    } else {
+      throw(new Error('Переданный в removeActor объект не Actor'));
+    }
   }
 
   noMoreActors() {}
