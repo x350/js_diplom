@@ -148,5 +148,15 @@ class Level {
     return true;
   }
 
-  playerTouched() {}
+  playerTouched(typeObjectString, TouchedObject=0) {
+    if (this.status !== null) return;
+    if ((typeObjectString === 'lava') || (typeObjectString === 'fireball')) {
+      this.status = 'lost';
+      return;
+    }
+    if ((typeObjectString === 'coin') && (TouchedObject !== 0) && (TouchedObject.type === 'coin')) {
+      this.removeActor(TouchedObject);
+    }
+    if (this.noMoreActors(TouchedObject.type)) this.status = 'won';
+  }
 }
