@@ -76,3 +76,64 @@ class Actor {
   }
 }
 
+// Реализация класса Level.
+class Level {
+  constructor(grid=[], actorsArray=[]) {
+    this.grid = grid;
+    this.actors = actorsArray;
+    // for(let item of this.actors){
+    //   if (item.type === 'player') {
+    //     this.player = item;
+    //     return;
+    //   }
+    // }
+    this.height = this.grid.length;
+    let maxRow = 0;
+    for(let row of this.grid) {
+      if (row.length > maxRow) {
+        maxRow = row.length;
+      }
+    }
+    this.width = maxRow;
+    this.status = null;
+    this.finishDelay = 1;
+  }
+
+  isFinished() {
+    return ((this.status !== null) && (this.finishDelay < 0))
+  }
+
+  actorAt(movingActor) {
+    if (movingActor instanceof Actor) {
+      for(let item of this.actors) {
+        if(movingActor.isIntersect(item)) return item;
+      }
+    } else {
+      throw(new Error('Переданный объект не Actor'))
+    }
+  }
+
+  obstacleAt(relocation, size) {
+    if ((relocation instanceof Vector) && (size instanceof Vector)) {    
+      if ((relocation.y + size.y ) > this.height) return 'lava';
+      if ((relocation.y < 0) || (relocation.x < 0) || ((relocation.x + size.x ) > this.width)) {
+        return 'wall';
+      }
+      for(let i = Math.floor(relocation.x); i < relocation.x + size.x ; i++) {
+        for(let j = Math.floor(relocation.y); j < relocation.y + size.y; j++) {
+          if(this.grid[j][i]) return this.grid[j][i];
+        }
+      }
+    } else {
+      throw(new Error('переданные в obstacleAt аргументы - не Vector'));
+    }
+  }
+
+  removeActor() {
+    
+  }
+
+  noMoreActors() {}
+
+  playerTouched() {}
+}
