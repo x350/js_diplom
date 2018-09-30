@@ -161,15 +161,39 @@ class Level {
 // Реализация LevelParser.
 
 class LevelParser {
-  constructor(ObjectsDict){
-
+  constructor(actorsDict){
+    this.actorsDict = actorsDict;
   }
 
-  actorFromSymbol() {}
+  actorFromSymbol(actorSymbol) {
+    if (actorSymbol && (actorSymbol in this.actorsDict)) {
+      return this.actorsDict[actorSymbol];
+    } 
+  }
 
-  obstacleFromSymbol() {}
+  obstacleFromSymbol(obstacleSymbol) {
+    if (obstacleSymbol === 'x') return 'wall';
+    if (obstacleSymbol === '!') return 'lava';
+  }
 
-  createGrid() {}
+  createGrid(arrayString) {
+    let tempArray = [];
+    for (let item of arrayString) {
+      tempArray.push(
+          Array.from(item).map(
+            function(element) {
+              if (element === 'x') return 'wall';
+              if (element === '!') {
+                return 'lava'
+              } else {
+                return undefined;
+              }
+            }
+          )
+        )
+    }
+    return tempArray;
+  }
 
   createActors() {}
 
@@ -179,6 +203,12 @@ class LevelParser {
 
 class Fireball extends Actor {
   constructor() {}
+
+  getNextPosition() {}
+
+  handleObstacle() {}
+
+  act() {}
 }
 
 class HorizontalFireball {
