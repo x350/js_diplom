@@ -194,7 +194,6 @@ class LevelParser {
       for (let itemX = 0; itemX < arrayFromString.length; itemX++) {
         let construct = this.actorFromSymbol(arrayFromString[itemX]);
         if (typeof(construct) !== 'function') continue;
-        // if ({}.toString.call(construct).slice(8, -1) !== 'Actor') continue;
         let newActorObject = new construct(new Vector(itemX, itemY));
         if (newActorObject instanceof Actor) actorsArray.push(newActorObject);
       }
