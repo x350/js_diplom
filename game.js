@@ -187,15 +187,16 @@ class LevelParser {
   }
 
   createActors(arrayString) {
+    if (!this.actorsDict) return [];
     let actorsArray = [];
     for (let itemY = 0; itemY < arrayString.length; itemY++) {
       let arrayFromString = Array.from(arrayString[itemY]);
       for (let itemX = 0; itemX < arrayFromString.length; itemX++) {
-        if (arrayFromString[itemX] === '@') actorsArray.push(new Player(itemX, itemY));
-        if (arrayFromString[itemX] === 'o') actorsArray.push(new Coin(itemX, itemY));
-        if (arrayFromString[itemX] === '=') actorsArray.push(new HorizontalFireball(itemX, itemY));
-        if (arrayFromString[itemX] === '|') actorsArray.push(new VerticalFireball(itemX, itemY));
-        if (arrayFromString[itemX] === 'v') actorsArray.push(new FireRain(itemX, itemY));
+        let construct = this.actorFromSymbol(arrayFromString[itemX]);
+        if (typeof(construct) !== 'function') continue;
+        // if ({}.toString.call(construct).slice(8, -1) !== 'Actor') continue;
+        let newActorObject = new construct(new Vector(itemX, itemY));
+        if (newActorObject instanceof Actor) actorsArray.push(newActorObject);
       }
     }
     return actorsArray;
