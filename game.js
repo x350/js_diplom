@@ -180,8 +180,8 @@ class LevelParser {
     let tempArray = [];
     for (let item of arrayString) {
       tempArray.push(
-          Array.from(item).map((item) => this.obstacleFromSymbol(item))
-        )
+        Array.from(item).map((item) => this.obstacleFromSymbol(item))
+      )
     }
     return tempArray;
   }
@@ -198,11 +198,12 @@ class LevelParser {
         if (newActorObject instanceof Actor) actorsArray.push(newActorObject);
       }
     }
-    return actorsArray;
-    
+    return actorsArray;    
   }
 
-  parse() {}
+  parse(arrayString) {
+    return new Level(this.createGrid(arrayString), this.createActors(arrayString));
+  }
 }
 
 
