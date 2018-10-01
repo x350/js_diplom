@@ -180,22 +180,27 @@ class LevelParser {
     let tempArray = [];
     for (let item of arrayString) {
       tempArray.push(
-          Array.from(item).map(
-            function(element) {
-              if (element === 'x') return 'wall';
-              if (element === '!') {
-                return 'lava'
-              } else {
-                return undefined;
-              }
-            }
-          )
+          Array.from(item).map((item) => this.obstacleFromSymbol(item))
         )
     }
     return tempArray;
   }
 
-  createActors() {}
+  createActors(arrayString) {
+    let actorsArray = [];
+    for (let itemY = 0; itemY < arrayString.length; itemY++) {
+      let arrayFromString = Array.from(arrayString[itemY]);
+      for (let itemX = 0; itemX < arrayFromString.length; itemX++) {
+        if (arrayFromString[itemX] === '@') actorsArray.push(new Player(itemX, itemY));
+        if (arrayFromString[itemX] === 'o') actorsArray.push(new Coin(itemX, itemY));
+        if (arrayFromString[itemX] === '=') actorsArray.push(new HorizontalFireball(itemX, itemY));
+        if (arrayFromString[itemX] === '|') actorsArray.push(new VerticalFireball(itemX, itemY));
+        if (arrayFromString[itemX] === 'v') actorsArray.push(new FireRain(itemX, itemY));
+      }
+    }
+    return actorsArray;
+    
+  }
 
   parse() {}
 }
