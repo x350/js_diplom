@@ -219,7 +219,10 @@ class Fireball extends Actor {
       this.pos.y + (this.speed.y * time));
   }
 
-  handleObstacle() {}
+  handleObstacle() {
+    this.speed.x = this.speed.x * -1;
+    this.speed.y = this.speed.y * -1;
+  }
 
   act() {}
 }
