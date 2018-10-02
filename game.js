@@ -240,8 +240,10 @@ class HorizontalFireball extends Fireball{
   }
 }
 
-class VerticalFireball {
-  constructor() {}
+class VerticalFireball extends Fireball{
+  constructor(position) {
+    super(position, new Vector(0, 2))
+  }
 }
 
 class FireRain {
