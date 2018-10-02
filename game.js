@@ -1,7 +1,5 @@
 'use strict';
 
-
-// Реализация класса Vector.
 class Vector {
   constructor (x=0, y=0) {
     if ((typeof(x) === 'number') && (typeof(y) === 'number') && !isNaN(x) && !isNaN(y)) {
@@ -30,8 +28,6 @@ class Vector {
   }
 }
 
-
-// Реализация класса Actor.
 class Actor {
   constructor(pos=new Vector(0,0), size=new Vector(1,1), speed=new Vector(0,0)) {
     if ((pos instanceof Vector) && (size instanceof Vector) && (speed instanceof Vector)) {
@@ -76,7 +72,6 @@ class Actor {
   }
 }
 
-// Реализация класса Level.
 class Level {
   constructor(grid=[], actorsArray=[]) {
     this.grid = grid;
@@ -157,8 +152,6 @@ class Level {
   }
 }
 
-
-// Реализация LevelParser.
 
 class LevelParser {
   constructor(actorsDict){
@@ -266,6 +259,7 @@ class Coin extends Actor {
     this.springSpeed = 8;
     this.springDist = 0.07;
     this.spring = Math.random() * 2 * Math.PI;
+    this.baseVector = this.pos;
   }
 
   get type() {return 'coin'; }
@@ -278,12 +272,26 @@ class Coin extends Actor {
     return new Vector(0, Math.sin(this.spring) * this.springDist);
   }
 
-  getNextPosition() {}
+  getNextPosition(time=1) {
+    this.updateSpring(time);
+    this.pos = this.baseVector.plus(this.getSpringVector());
+    return this.pos;
+  }
 
-  act(time) {}
+  act(time) {
+    this.pos = this.getNextPosition(time);
+  }
 }
+
+
 
 class Player extends Actor{
   constructor(position) {
+    if (!position) {
+      position = new Vector(0, 0);
+    }
+    super(new Vector(0,-0.5).plus(position), new Vector(0.8, 1.5));
   }
+
+  get type() {return 'player'};
 }
