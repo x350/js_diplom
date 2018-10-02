@@ -224,7 +224,14 @@ class Fireball extends Actor {
     this.speed.y = this.speed.y * -1;
   }
 
-  act() {}
+  act(time, playingField,) {
+    let nextPosition = this.getNextPosition(time);
+    if(!playingField.obstacleAt(nextPosition,this.size)) {
+      this.pos = nextPosition;
+    } else {
+      this.handleObstacle();     
+    }
+  }
 }
 
 class HorizontalFireball {
