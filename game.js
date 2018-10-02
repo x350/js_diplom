@@ -246,8 +246,15 @@ class VerticalFireball extends Fireball{
   }
 }
 
-class FireRain {
-  constructor() {}
+class FireRain extends Fireball{
+  constructor(position) {
+    super(position, new Vector(0, 3));
+    this.startPosition = position;
+  }
+
+  handleObstacle() {
+    this.pos = this.startPosition; 
+  }
 }
 
 class Coin extends Actor {
