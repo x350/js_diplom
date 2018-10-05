@@ -82,7 +82,15 @@ class Level {
         return;
       }
     }
-    this.height = this.grid.length;
+    
+  
+    this.status = null;
+    this.finishDelay = 1;
+  }
+
+   get height() {return this.grid.length};
+
+   get width() {
     let maxRow = 0;
     for(let row of this.grid) {
       let tempValue = (row !== undefined) ? row.length : 0;
@@ -90,10 +98,8 @@ class Level {
         maxRow = tempValue;
       }
     }
-    this.width = maxRow;
-    this.status = null;
-    this.finishDelay = 1;
-  }
+    return maxRow;    
+   }
 
   isFinished() {
     return ((this.status !== null) && (this.finishDelay < 0))
@@ -111,15 +117,20 @@ class Level {
 
   obstacleAt(relocation, size) {
     if ((relocation instanceof Vector) && (size instanceof Vector)) {    
-      if ((relocation.y + size.y ) > this.height) return 'lava';
-      if ((relocation.y < 0) || (relocation.x < 0) || ((relocation.x + size.x ) > this.width)) {
+      if ((relocation.y + size.y ) >= this.height) return 'lava';
+      if ((relocation.y < 0) || (relocation.x < 0) || ((relocation.x + size.x ) >= this.width)) {
         return 'wall';
-      }
-      for(let i = Math.floor(relocation.x); i < relocation.x + size.x ; i++) {
-        for(let j = Math.floor(relocation.y); j < relocation.y + size.y; j++) {
-          if(this.grid[j][i]) return this.grid[j][i];
-        }
-      }
+      }  
+
+      let i = Math.floor(relocation.x + size.x);
+      let j = Math.floor(relocation.y + size.y);
+      return this.grid[j][i];
+
+      // for(let i = Math.ceil(relocation.x); i < relocation.x + size.x; i++) {
+      //   for(let j = Math.ceil(relocation.y); j < relocation.y + size.y; j++) {
+      //     return this.grid[j][i];
+      //   }
+      // }
     } else {
       throw(new Error('переданные в obstacleAt аргументы - не Vector'));
     }
@@ -287,3 +298,31 @@ class Player extends Actor{
 
   get type() {return 'player'};
 }
+
+
+
+const schema = [
+  '         ',
+  '         ',
+  '         ',
+  '         ',
+  '     !xxx',
+  ' @       ',
+  'xxx!     ',
+  '         '
+];
+const actorDict = {
+  '@': Player
+}
+const parser = new LevelParser(actorDict);
+const level = parser.parse(schema);
+runLevel(level, DOMDisplay);
+
+function loadLevels() {
+
+}
+
+function runGame() {
+
+}
+
