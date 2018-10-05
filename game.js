@@ -122,12 +122,12 @@ class Level {
         return 'wall';
       }  
 
-      let i = Math.floor(relocation.x + size.x);
-      let j = Math.floor(relocation.y + size.y);
+      let i = Math.floor(relocation.x + size.x/2);
+      let j = Math.floor(relocation.y + size.y-0.01);
       return this.grid[j][i];
 
-      // for(let i = Math.ceil(relocation.x); i < relocation.x + size.x; i++) {
-      //   for(let j = Math.ceil(relocation.y); j < relocation.y + size.y; j++) {
+      // for(let i = Math.floor(relocation.x); i < relocation.x + size.x; i++) {
+      //   for(let j = Math.ceil(relocation.y); j <relocation.y + size.y; j++) {
       //     return this.grid[j][i];
       //   }
       // }
@@ -299,30 +299,15 @@ class Player extends Actor{
   get type() {return 'player'};
 }
 
-
-
-const schema = [
-  '         ',
-  '         ',
-  '         ',
-  '         ',
-  '     !xxx',
-  ' @       ',
-  'xxx!     ',
-  '         '
-];
 const actorDict = {
-  '@': Player
+  '@': Player,
+  'v': FireRain,
+  'o': Coin,
+  '=': HorizontalFireball,
+  '|': VerticalFireball
 }
+
 const parser = new LevelParser(actorDict);
-const level = parser.parse(schema);
-runLevel(level, DOMDisplay);
 
-function loadLevels() {
-
-}
-
-function runGame() {
-
-}
+loadLevels().then(item => runGame(JSON.parse(item), parser,DOMDisplay).then(() => alert('Вы выиграли приз!')))
 
