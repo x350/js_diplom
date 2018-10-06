@@ -151,15 +151,19 @@ class Level {
   }
 
   playerTouched(typeObjectString, TouchedObject=0) {
-    if (this.status !== null) return;
-    if ((typeObjectString === 'lava') || (typeObjectString === 'fireball')) {
-      this.status = 'lost';
-      return;
+    if (this.status !== null) {
+      if ((typeObjectString === 'lava') || (typeObjectString === 'fireball')) {
+        this.status = 'lost';
+        return;
+      }
+      if ((typeObjectString === 'coin') && (TouchedObject !== 0) && (TouchedObject.type === 'coin')) {
+        this.removeActor(TouchedObject);
+      }
+      if (this.noMoreActors(TouchedObject.type))  {
+        this.status = 'won';      
+        return;
+      }
     }
-    if ((typeObjectString === 'coin') && (TouchedObject !== 0) && (TouchedObject.type === 'coin')) {
-      this.removeActor(TouchedObject);
-    }
-    if (this.noMoreActors(TouchedObject.type)) this.status = 'won';
   }
 }
 
@@ -309,5 +313,5 @@ const actorDict = {
 
 const parser = new LevelParser(actorDict);
 
-loadLevels().then(item => runGame(JSON.parse(item), parser,DOMDisplay).then(() => alert('Вы выиграли приз!')))
+loadLevels().then(item => runGame(JSON.parse(item), parser, DOMDisplay).then(() => alert('Вы выиграли приз!')))
 
