@@ -88,9 +88,9 @@ class Level {
     this.finishDelay = 1;
   }
 
-   get height() {return this.grid.length};
+  get height() {return this.grid.length};
 
-   get width() {
+  get width() {
     let maxRow = 0;
     for(let row of this.grid) {
       let tempValue = (row !== undefined) ? row.length : 0;
@@ -100,6 +100,8 @@ class Level {
     }
     return maxRow;    
    }
+
+  // get status() {return this.status};
 
   isFinished() {
     return ((this.status !== null) && (this.finishDelay < 0))
@@ -145,23 +147,24 @@ class Level {
 
   noMoreActors(typeMovingObject) {
     for (let item of this.actors) {
-      if (typeMovingObject === item.type) return false;
-    }
-    return true;
+      if (item.type === typeMovingObject) return false;
+    } 
+    return true;   
   }
 
   playerTouched(typeObjectString, TouchedObject=0) {
-    if (this.status !== null) {
+    if (!this.status) {
       if ((typeObjectString === 'lava') || (typeObjectString === 'fireball')) {
         this.status = 'lost';
         return;
       }
       if ((typeObjectString === 'coin') && (TouchedObject !== 0) && (TouchedObject.type === 'coin')) {
         this.removeActor(TouchedObject);
-      }
-      if (this.noMoreActors(TouchedObject.type))  {
-        this.status = 'won';      
-        return;
+        if (this.noMoreActors(TouchedObject.type))  {
+          this.status = 'won'; 
+        console.log(this.status);     
+        return;        
+        }   
       }
     }
   }
@@ -314,4 +317,57 @@ const actorDict = {
 const parser = new LevelParser(actorDict);
 
 loadLevels().then(item => runGame(JSON.parse(item), parser, DOMDisplay).then(() => alert('Вы выиграли приз!')))
+
+// const schemas = [
+//   [
+//     '         ',
+//     '         ',
+//     '    =    ',
+//     '       o ',
+//     '     !xxx',
+//     ' @       ',
+//     'xxx!     ',
+//     '         '
+//   ],
+//   [
+//     '      v  ',
+//     '    v    ',
+//     '  v      ',
+//     '        o',
+//     '        x',
+//     '@   x    ',
+//     'x        ',
+//     '         '
+//   ]
+// ];
+// const actorDict = {
+//   '@': Player,
+//   'v': FireRain,
+//     'o': Coin,
+//     '=': HorizontalFireball
+// }
+// const parser = new LevelParser(actorDict);
+// runGame(schemas, parser, DOMDisplay)
+//   .then(() => console.log('Вы выиграли приз!'));
+
+
+// const schema = [
+//   '         ',
+//   '         ',
+//   '    =    ',
+//   '       o ',
+//   '     !xxx',
+//   ' @       ',
+//   'xxx!     ',
+//   '         '
+// ];
+// const actorDict = {
+//   '@': Player,
+//   '=': HorizontalFireball,
+//   'o': Coin
+// }
+// const parser = new LevelParser(actorDict);
+// const level = parser.parse(schema);
+// runLevel(level, DOMDisplay)
+//   .then(status => console.log(`Игрок ${status}`));
 
