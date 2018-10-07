@@ -76,16 +76,14 @@ class Level {
   constructor(grid=[], actorsArray=[]) {
     this.grid = grid;
     this.actors = actorsArray;
+    this.status = null;
+    this.finishDelay = 1;
     for(let item of this.actors){
       if (item.type === 'player') {
         this.player = item;
         return;
       }
-    }
-    
-  
-    this.status = null;
-    this.finishDelay = 1;
+    }    
   }
 
   get height() {return this.grid.length};
@@ -153,7 +151,7 @@ class Level {
   }
 
   playerTouched(typeObjectString, TouchedObject=0) {
-    if (!this.status) {
+    if (this.status === null) {
       if ((typeObjectString === 'lava') || (typeObjectString === 'fireball')) {
         this.status = 'lost';
         return;
