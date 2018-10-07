@@ -99,8 +99,6 @@ class Level {
     return maxRow;    
    }
 
-  // get status() {return this.status};
-
   isFinished() {
     return ((this.status !== null) && (this.finishDelay < 0))
   }
@@ -122,15 +120,12 @@ class Level {
         return 'wall';
       }  
 
-      let i = Math.floor(relocation.x + size.x/2);
+      let i = Math.floor(relocation.x);
+      let ii = Math.floor(relocation.x + size.x-0.01);      
       let j = Math.floor(relocation.y + size.y-0.01);
-      return this.grid[j][i];
-
-      // for(let i = Math.floor(relocation.x); i < relocation.x + size.x; i++) {
-      //   for(let j = Math.ceil(relocation.y); j <relocation.y + size.y; j++) {
-      //     return this.grid[j][i];
-      //   }
-      // }
+      if (this.grid[j][i] === undefined) {
+        return this.grid[j][ii];
+      } else { return this.grid[j][i]; }      
     } else {
       throw(new Error('переданные в obstacleAt аргументы - не Vector'));
     }
@@ -160,8 +155,7 @@ class Level {
         this.removeActor(TouchedObject);
         if (this.noMoreActors(TouchedObject.type))  {
           this.status = 'won'; 
-        console.log(this.status);     
-        return;        
+          return;        
         }   
       }
     }
@@ -315,57 +309,4 @@ const actorDict = {
 const parser = new LevelParser(actorDict);
 
 loadLevels().then(item => runGame(JSON.parse(item), parser, DOMDisplay).then(() => alert('Вы выиграли приз!')))
-
-// const schemas = [
-//   [
-//     '         ',
-//     '         ',
-//     '    =    ',
-//     '       o ',
-//     '     !xxx',
-//     ' @       ',
-//     'xxx!     ',
-//     '         '
-//   ],
-//   [
-//     '      v  ',
-//     '    v    ',
-//     '  v      ',
-//     '        o',
-//     '        x',
-//     '@   x    ',
-//     'x        ',
-//     '         '
-//   ]
-// ];
-// const actorDict = {
-//   '@': Player,
-//   'v': FireRain,
-//     'o': Coin,
-//     '=': HorizontalFireball
-// }
-// const parser = new LevelParser(actorDict);
-// runGame(schemas, parser, DOMDisplay)
-//   .then(() => console.log('Вы выиграли приз!'));
-
-
-// const schema = [
-//   '         ',
-//   '         ',
-//   '    =    ',
-//   '       o ',
-//   '     !xxx',
-//   ' @       ',
-//   'xxx!     ',
-//   '         '
-// ];
-// const actorDict = {
-//   '@': Player,
-//   '=': HorizontalFireball,
-//   'o': Coin
-// }
-// const parser = new LevelParser(actorDict);
-// const level = parser.parse(schema);
-// runLevel(level, DOMDisplay)
-//   .then(status => console.log(`Игрок ${status}`));
 
