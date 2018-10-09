@@ -81,7 +81,7 @@ class Level {
     for(let item of this.actors){
       if (item.type === 'player') {
         this.player = item;
-        return;
+        break;
       }
     }    
   }
@@ -309,4 +309,3 @@ const actorDict = {
 const parser = new LevelParser(actorDict);
 
 loadLevels().then(item => runGame(JSON.parse(item), parser, DOMDisplay).then(() => alert('Вы выиграли приз!')))
-
