@@ -46,25 +46,6 @@ class Actor {
 
   get type() { return 'actor'; }
 
-  // isIntersect(objectActor) {
-  //   if (objectActor instanceof Actor) {
-  //     if (Object.is(this, objectActor)) {
-  //       return false;
-  //     } else {
-  //       let xColl = false;
-  //       let yColl = false;
-  //       if ((this.right > objectActor.left) && (this.left < objectActor.right)) {
-  //         xColl = true;
-  //       }
-  //       if ((this.bottom > objectActor.top) && (this.top < objectActor.bottom)) {
-  //         yColl = true;
-  //       }
-  //       if (xColl & yColl) { return true; }
-  //       return false;
-  //     }
-  //   } else { throw new Error('Переданный параметр не Actor'); }
-  // }
-
   isIntersect(objectActor) {
     if (!(objectActor instanceof Actor)) {
       throw new Error('Переданный параметр не Actor');
@@ -72,15 +53,15 @@ class Actor {
     if (Object.is(this, objectActor)) {
       return false;
     } else {
-      let xColl = false;
-      let yColl = false;
+      let xColumn = false;
+      let yColumn = false;
       if ((this.right > objectActor.left) && (this.left < objectActor.right)) {
-        xColl = true;
+        xColumn = true;
       }
       if ((this.bottom > objectActor.top) && (this.top < objectActor.bottom)) {
-        yColl = true;
+        yColumn = true;
       }
-      if (xColl & yColl) { return true; }
+      if (xColumn & yColumn) { return true; }
       return false;
     }
   }
