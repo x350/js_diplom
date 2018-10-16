@@ -2,40 +2,36 @@
 
 class Vector {
   constructor(x = 0, y = 0) {
-    if ((typeof x === 'number') && (typeof y === 'number') && !isNaN(x) && !isNaN(y)) {
-      this.x = x;
-      this.y = y;
-    } else {
+    if (!(typeof x === 'number') && !(typeof y === 'number') && isNaN(x) && isNaN(y)) {
       throw new Error('Переданные в конструктор класса Vector параметры - не число');
-    }
+    }    
+    this.x = x;
+    this.y = y;
   }
 
   plus(objectVector) {
-    if (objectVector instanceof Vector) {
-      return new Vector(this.x + objectVector.x, this.y + objectVector.y);
-    } else {
+    if (!(objectVector instanceof Vector)) {
       throw new Error('Можно прибавлять к вектору только вектор типа Vector');
-    }     
+    }
+    return new Vector(this.x + objectVector.x, this.y + objectVector.y);     
   }
 
   times(multiplexor) {
-    if ((typeof multiplexor === 'number') && !(isNaN(multiplexor))) { 
-      return new Vector(this.x * multiplexor, this.y * multiplexor);
-    } else {
+    if (!(typeof multiplexor === 'number') && isNaN(multiplexor)) { 
       throw new Error('Множитель не число');
     }
+    return new Vector(this.x * multiplexor, this.y * multiplexor);
   }
 }
 
 class Actor {
   constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
-    if ((pos instanceof Vector) && (size instanceof Vector) && (speed instanceof Vector)) {
-      this.pos = pos;
-      this.size = size;
-      this.speed = speed;
-    } else {
+    if (!(pos instanceof Vector) || !(size instanceof Vector) || !(speed instanceof Vector)) {
       throw new Error('Переданные в конструктор Actor параметры не являются типиом данных Vector');
     }
+    this.pos = pos;
+    this.size = size;
+    this.speed = speed;
   }
 
   act() {}
@@ -50,23 +46,43 @@ class Actor {
 
   get type() { return 'actor'; }
 
+  // isIntersect(objectActor) {
+  //   if (objectActor instanceof Actor) {
+  //     if (Object.is(this, objectActor)) {
+  //       return false;
+  //     } else {
+  //       let xColl = false;
+  //       let yColl = false;
+  //       if ((this.right > objectActor.left) && (this.left < objectActor.right)) {
+  //         xColl = true;
+  //       }
+  //       if ((this.bottom > objectActor.top) && (this.top < objectActor.bottom)) {
+  //         yColl = true;
+  //       }
+  //       if (xColl & yColl) { return true; }
+  //       return false;
+  //     }
+  //   } else { throw new Error('Переданный параметр не Actor'); }
+  // }
+
   isIntersect(objectActor) {
-    if (objectActor instanceof Actor) {
-      if (Object.is(this, objectActor)) {
-        return false;
-      } else {
-        let xColl = false;
-        let yColl = false;
-        if ((this.right > objectActor.left) && (this.left < objectActor.right)) {
-          xColl = true;
-        }
-        if ((this.bottom > objectActor.top) && (this.top < objectActor.bottom)) {
-          yColl = true;
-        }
-        if (xColl & yColl) { return true; }
-        return false;
+    if (!(objectActor instanceof Actor)) {
+      throw new Error('Переданный параметр не Actor');
+    }
+    if (Object.is(this, objectActor)) {
+      return false;
+    } else {
+      let xColl = false;
+      let yColl = false;
+      if ((this.right > objectActor.left) && (this.left < objectActor.right)) {
+        xColl = true;
       }
-    } else { throw new Error('Переданный параметр не Actor'); }
+      if ((this.bottom > objectActor.top) && (this.top < objectActor.bottom)) {
+        yColl = true;
+      }
+      if (xColl & yColl) { return true; }
+      return false;
+    }
   }
 }
 
@@ -102,31 +118,29 @@ class Level {
   }
 
   actorAt(movingActor) {
-    if (movingActor instanceof Actor) {
-      for (let item of this.actors) {
-        if (movingActor.isIntersect(item)) return item;
-      }
-    } else {
+    if (!(movingActor instanceof Actor)) {
       throw new Error('Переданный объект не Actor');
+    }
+    for (let item of this.actors) {
+      if (movingActor.isIntersect(item)) return item;
     }
   }
 
   obstacleAt(relocation, size) {
-    if ((relocation instanceof Vector) && (size instanceof Vector)) {    
-      if ((relocation.y + size.y) >= this.height) return 'lava';
-      if ((relocation.y < 0) || (relocation.x < 0) || ((relocation.x + size.x) >= this.width)) {
-        return 'wall';
-      }  
-
-      let xPlace = Math.floor(relocation.x);
-      let xPlaceWithSize = Math.floor(relocation.x + size.x - 0.01);      
-      let yPlace = Math.floor(relocation.y + size.y - 0.01);
-      if (this.grid[yPlace][xPlace] === undefined) {
-        return this.grid[yPlace][xPlaceWithSize];
-      } else { return this.grid[yPlace][xPlace]; }      
-    } else {
+    if (!(relocation instanceof Vector) || !(size instanceof Vector)) {  
       throw new Error('переданные в obstacleAt аргументы - не Vector');
-    }
+    }  
+    if ((relocation.y + size.y) >= this.height) return 'lava';
+    if ((relocation.y < 0) || (relocation.x < 0) || ((relocation.x + size.x) >= this.width)) {
+      return 'wall';
+    }  
+
+    let xPlace = Math.floor(relocation.x);
+    let xPlaceWithSize = Math.floor(relocation.x + size.x - 0.01);      
+    let yPlace = Math.floor(relocation.y + size.y - 0.01);
+    if (this.grid[yPlace][xPlace] === undefined) {
+      return this.grid[yPlace][xPlaceWithSize];
+    } else { return this.grid[yPlace][xPlace]; }       
   }
 
   removeActor(objectActor) {
