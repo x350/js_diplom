@@ -151,10 +151,9 @@ class Level {
   }
 
   noMoreActors(typeMovingObject) {
-    for (let item of this.actors) {
-      if (item.type === typeMovingObject) return false;
-    } 
-    return true;   
+   return this.actors.every(function(item) {
+      if (item.type !== typeMovingObject) { return true; }
+    })  
   }
 
   playerTouched(typeObjectString, TouchedObject = 0) {
