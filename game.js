@@ -2,7 +2,7 @@
 
 class Vector {
   constructor(x = 0, y = 0) {
-    if (!(typeof x === 'number') && !(typeof y === 'number') && isNaN(x) && isNaN(y)) {
+    if ((typeof x !== 'number') || (typeof y !== 'number') || isNaN(x) || isNaN(y)) {
       throw new Error('Переданные в конструктор класса Vector параметры - не число');
     }    
     this.x = x;
@@ -151,7 +151,7 @@ class Level {
   }
 
   noMoreActors(typeMovingObject) {
-   return this.actors.every(function(item) {
+  return this.actors.every(function(item) {
       if (item.type !== typeMovingObject) { return true; }
     })  
   }
