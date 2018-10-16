@@ -95,14 +95,22 @@ class Level {
     return ((this.status !== null) && (this.finishDelay < 0));
   }
 
+  // actorAt(movingActor) {
+  //   if (!(movingActor instanceof Actor)) {
+  //     throw new Error('Переданный объект не Actor');
+  //   }
+  //   for (let item of this.actors) {
+  //     if (movingActor.isIntersect(item)) return item;
+  //   }
+  // }
+  
   actorAt(movingActor) {
     if (!(movingActor instanceof Actor)) {
       throw new Error('Переданный объект не Actor');
     }
-    for (let item of this.actors) {
-      if (movingActor.isIntersect(item)) return item;
-    }
+    return this.actors.find((item) => movingActor.isIntersect(item));
   }
+
 
   obstacleAt(relocation, size) {
     if (!(relocation instanceof Vector) || !(size instanceof Vector)) {  
