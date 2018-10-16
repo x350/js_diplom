@@ -73,12 +73,9 @@ class Level {
     this.actors = actorsArray;
     this.status = null;
     this.finishDelay = 1;
-    for (let item of this.actors) {
-      if (item.type === 'player') {
-        this.player = item;
-        break;
-      }
-    }    
+    this.player = this.actors.find(function(actor) {
+      return actor.type === 'player';
+    })  
   }
 
   get height() { return this.grid.length; }
