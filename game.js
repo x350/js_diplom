@@ -75,7 +75,7 @@ class Level {
     this.finishDelay = 1;
     this.player = this.actors.find(function(actor) {
       return actor.type === 'player';
-    })  
+    }); 
   }
 
   get height() { return this.grid.length; }
