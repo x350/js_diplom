@@ -17,7 +17,7 @@ class Vector {
   }
 
   times(multiplexor) {
-    if (!(typeof multiplexor === 'number') && isNaN(multiplexor)) { 
+    if ((typeof multiplexor !== 'number') || isNaN(multiplexor)) { 
       throw new Error('Множитель не число');
     }
     return new Vector(this.x * multiplexor, this.y * multiplexor);
@@ -81,7 +81,7 @@ class Level {
     }    
   }
 
-  get height() { return this.grid.length };
+  get height() { return this.grid.length; }
 
   get width() {
     let maxRow = 0;
@@ -134,7 +134,7 @@ class Level {
   noMoreActors(typeMovingObject) {
   return this.actors.every(function(item) {
       if (item.type !== typeMovingObject) { return true; }
-    })  
+    });  
   }
 
   playerTouched(typeObjectString, TouchedObject = 0) {
@@ -173,7 +173,7 @@ class LevelParser {
     for (let item of arrayString) {
       tempArray.push(
         Array.from(item).map((item) => this.obstacleFromSymbol(item))
-      )
+      );
     }
     return tempArray;
   }
@@ -226,13 +226,13 @@ class Fireball extends Actor {
 
 class HorizontalFireball extends Fireball {
   constructor(position) {
-    super(position, new Vector(2, 0))
+    super(position, new Vector(2, 0));
   }
 }
 
 class VerticalFireball extends Fireball {
   constructor(position) {
-    super(position, new Vector(0, 2))
+    super(position, new Vector(0, 2));
   }
 }
 
@@ -282,7 +282,7 @@ class Player extends Actor {
     super(position.plus(new Vector(0, -0.5)), new Vector(0.8, 1.5));
   }
 
-  get type() { return 'player' };
+  get type() { return 'player'; }
 }
 
 const actorDict = {
@@ -291,7 +291,7 @@ const actorDict = {
   'o': Coin,
   '=': HorizontalFireball,
   '|': VerticalFireball
-}
+};
 
 const parser = new LevelParser(actorDict);
 
