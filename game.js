@@ -201,9 +201,8 @@ class LevelParser {
     if (!this.actorsDict) return [];
     let actorsArray = [];
     for (let itemY = 0; itemY < arrayString.length; itemY++) {
-      let arrayFromString = Array.from(arrayString[itemY]);
-      for (let itemX = 0; itemX < arrayFromString.length; itemX++) {
-        let construct = this.actorFromSymbol(arrayFromString[itemX]);
+      for (let itemX = 0; itemX < arrayString[itemY].length; itemX++) {
+        let construct = this.actorFromSymbol(arrayString[itemY][itemX]);
         if (typeof construct !== 'function') continue;
         let newActorObject = new construct(new Vector(itemX, itemY));
         if (newActorObject instanceof Actor) actorsArray.push(newActorObject);
