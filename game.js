@@ -2,7 +2,7 @@
 
 class Vector {
   constructor(x = 0, y = 0) {
-    if ((typeof x !== 'number') || (typeof y !== 'number') || isNaN(x) || isNaN(y)) {
+    if ((typeof x !== 'number') || (typeof y !== 'number')) {
       throw new Error('Переданные в конструктор класса Vector параметры - не число');
     }    
     this.x = x;
@@ -17,7 +17,7 @@ class Vector {
   }
 
   times(multiplexor) {
-    if ((typeof multiplexor !== 'number') || isNaN(multiplexor)) { 
+    if ((typeof multiplexor !== 'number')) { 
       throw new Error('Множитель не число');
     }
     return new Vector(this.x * multiplexor, this.y * multiplexor);
